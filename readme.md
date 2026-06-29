@@ -5,7 +5,7 @@ This script fetches traffic signal metrics from the INRIX API and upserts them t
 ## Usage
 
 ```
-python inrix_to_socrata.py [-s START_DATE] [-e END_DATE]
+python etl/inrix_download.py [-s START_DATE] [-e END_DATE]
 ```
 
 ## Environment Variables
@@ -42,22 +42,22 @@ Both arguments are optional. If omitted, the script defaults to the last 7 days.
 
 Run with default date range (last 7 days):
 ```bash
-python inrix_to_socrata.py
+python etl/inrix_download.py
 ```
 
 Specify a start date only (end defaults to today):
 ```bash
-python inrix_to_socrata.py -s 2026-06-01
+python etl/inrix_download.py -s 2026-06-01
 ```
 
 Specify an end date only (start defaults to 7 days before today):
 ```bash
-python inrix_to_socrata.py -e 2026-06-15
+python etl/inrix_download.py -e 2026-06-15
 ```
 
 Specify both dates explicitly:
 ```bash
-python inrix_to_socrata.py -s 2026-06-01 -e 2026-06-30
+python etl/inrix_download.py -s 2026-06-01 -e 2026-06-30
 ```
 
 ---
