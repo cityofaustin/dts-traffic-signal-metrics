@@ -1,3 +1,12 @@
+"""
+A collection of functions to generate payloads for querying traffic signal data from the INRIX API.
+
+Functions:
+    - get_metadata_payload: Generates payload for metadata based on intersections.
+    - get_signal_movements_payload: Generates payload for signal movement data for intersections over a specified date.
+    - get_signal_metrics_payload: Generates payload for signal metrics data for intersections over a specified date.
+"""
+
 def get_metadata_payload(intersections):
     return {
         "fields": [

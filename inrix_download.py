@@ -248,9 +248,11 @@ def records_to_socrata(records, dataset, batch_size=10000):
 
 
 def main():
+    # Fallback dates if no args are supplied
     today = datetime.today().date()
     seven_days_ago = today - timedelta(days=7)
 
+    # Argument parsing
     parser = argparse.ArgumentParser(description="Fetch INRIX signal metrics and upload to Socrata.")
     parser.add_argument("-s", "--start", default=seven_days_ago.strftime("%Y-%m-%d"), help="Start date in YYYY-MM-DD format (default: 7 days ago)")
     parser.add_argument("-e", "--end", default=today.strftime("%Y-%m-%d"), help="End date in YYYY-MM-DD format (default: today)")
