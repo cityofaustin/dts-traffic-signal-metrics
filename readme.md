@@ -10,7 +10,7 @@ python inrix_to_socrata.py [-s START_DATE] [-e END_DATE]
 
 ## Environment Variables
  
-Create a `.env` file using the template supplied in `env_template`. Note that the vendor can only provision INRIX API keys 
+Create a `.env` file using the template supplied in `env_template`. Note that only the vendor can only provision INRIX API app IDs 
 and requires a subscription.
  
 ```
@@ -76,13 +76,13 @@ Then run the container, passing date arguments as needed:
  
 ```bash
 # Default date range (last 7 days)
-docker run --env-file .env inrix-to-socrata
+docker run --env-file .env dts-traffic-signal-metrics:local
  
 # Specify a start date
-docker run --env-file .env inrix-to-socrata -s 2026-06-01
+docker run --env-file .env dts-traffic-signal-metrics:local -s 2026-06-01
  
 # Specify both dates
-docker run --env-file .env inrix-to-socrata -s 2026-06-01 -e 2026-06-30
+docker run --env-file .env dts-traffic-signal-metrics:local -s 2026-06-01 -e 2026-06-30
 ```
 
 ## Data Notes
