@@ -1,0 +1,6 @@
+# Ignoring everything
+*
+
+# Allow the specific folder/files we need
+!etl/
+!requirements.txt

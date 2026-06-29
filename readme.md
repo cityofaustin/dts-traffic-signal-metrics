@@ -8,6 +8,27 @@ This script fetches traffic signal metrics from the INRIX API and upserts them t
 python inrix_to_socrata.py [-s START_DATE] [-e END_DATE]
 ```
 
+## Environment Variables
+ 
+Create a `.env` file using the template supplied in `env_template`. Note that the vendor can only provision INRIX API keys 
+and requires a subscription.
+ 
+```
+# INRIX
+INRIX_APP_ID=
+INRIX_HASH_TOKEN=
+INRIX_AUTH_URL=
+INRIX_SIGNALS_URL=
+
+# Socrata
+MOVEMENTS_DATASET=8qqy-h6xg
+SIGNALS_DATASET=bfmq-ijru
+SO_PASS=
+SO_TOKEN=
+SO_USER=
+SO_WEB=datahub.austintexas.gov
+```
+
 ### Arguments
 
 | Flag              | Description                                         | Default        |
@@ -37,6 +58,31 @@ python inrix_to_socrata.py -e 2026-06-15
 Specify both dates explicitly:
 ```bash
 python inrix_to_socrata.py -s 2026-06-01 -e 2026-06-30
+```
+
+---
+ 
+## Docker
+ 
+If you would like to run this script in a Docker container, follow the instructions below.
+ 
+### Build
+ 
+```bash
+docker build -t dts-traffic-signal-metrics:local .
+```
+ 
+Then run the container, passing date arguments as needed:
+ 
+```bash
+# Default date range (last 7 days)
+docker run --env-file .env inrix-to-socrata
+ 
+# Specify a start date
+docker run --env-file .env inrix-to-socrata -s 2026-06-01
+ 
+# Specify both dates
+docker run --env-file .env inrix-to-socrata -s 2026-06-01 -e 2026-06-30
 ```
 
 ## Data Notes
