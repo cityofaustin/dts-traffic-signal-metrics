@@ -1,6 +1,6 @@
 # Traffic Signal Metrics
 
-This script fetches traffic signal metrics from the INRIX API and upserts them into a Socrata data portal dataset. 
+This script fetches traffic signal metrics from the INRIX API and upserts them to Socrata. 
 
 ## Usage
 
