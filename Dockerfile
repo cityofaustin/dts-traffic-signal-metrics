@@ -9,4 +9,5 @@ COPY etl/inrix_download.py .
 COPY etl/inrix_payloads.py .
 COPY etl/utils.py .
 
-CMD ["python", "inrix_download.py"]
+ENTRYPOINT ["python", "inrix_download.py"]
+CMD []
