@@ -10,7 +10,7 @@ python etl/inrix_download.py [-s START_DATE] [-e END_DATE]
 
 ## Environment Variables
  
-Create a `.env` file using the template supplied in `env_template`. Note that only the vendor can only provision INRIX API app IDs 
+Create a `.env` file using the template supplied in `env_template`. Note that only the vendor can provision INRIX API app IDs 
 and requires a subscription.
  
 ```

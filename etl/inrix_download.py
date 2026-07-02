@@ -243,7 +243,7 @@ def records_to_socrata(records, dataset, batch_size=10000):
     for start in range(0, total, batch_size):
         batch = records[start:start + batch_size]
         soda_res = soda_client.upsert(dataset, batch)
-        logger.info(f"Batch {start // batch_size + 1} ({start}-{start + len(batch) - 1} of {total}):")
+        logger.info(f"Batch {start // batch_size + 1} ({start}-{start + len(batch) - 1} of {total - 1}):")
         logger.info(soda_res)
 
 
