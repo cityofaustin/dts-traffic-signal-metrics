@@ -1,6 +1,8 @@
 # Ignoring everything
 *
 
-# Allow the specific folder/files we need
-!etl/
+# Only allow the specific files we need
+!etl/inrix_download.py
+!etl/inrix_payloads.py
+!etl/utils.py
 !requirements.txt

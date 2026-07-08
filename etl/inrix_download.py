@@ -19,18 +19,18 @@ AUTH_URL = os.getenv("INRIX_AUTH_URL")
 SIGNALS_URL = os.getenv("INRIX_SIGNALS_URL")
 
 # Socrata Secrets
-SO_WEB = os.getenv("SO_WEB")
-SO_TOKEN = os.getenv("SO_TOKEN")
-SO_USER = os.getenv("SO_USER")
-SO_PASS = os.getenv("SO_PASS")
+SOCRATA_ENDPOINT = os.getenv("SOCRATA_ENDPOINT")
+SOCRATA_TOKEN = os.getenv("SOCRATA_TOKEN")
+SOCRATA_API_KEY = os.getenv("SOCRATA_API_KEY")
+SOCRATA_SECRET_KEY = os.getenv("SOCRATA_SECRET_KEY")
 SIGNALS_DATASET = os.getenv("SIGNALS_DATASET")
 MOVEMENTS_DATASET = os.getenv("MOVEMENTS_DATASET")
 
 soda_client = Socrata(
-    SO_WEB,
-    SO_TOKEN,
-    username=SO_USER,
-    password=SO_PASS,
+    SOCRATA_ENDPOINT,
+    SOCRATA_TOKEN,
+    username=SOCRATA_API_KEY,
+    password=SOCRATA_SECRET_KEY,
     timeout=60,
 )
 
@@ -194,11 +194,6 @@ def format_metrics(records, start, date, metadata, query):
             if int_id not in metadata:
                 continue
             meta = metadata[int_id]
-
-            if query == "movements":
-                if row["movementId"] not in meta["movements"]:
-                    # Sometimes we get data for movements that are "excluded", this ignores them.
-                    continue
             row.update(meta)
 
             row["row_id"] = (
@@ -206,6 +201,10 @@ def format_metrics(records, start, date, metadata, query):
             )
 
             if query == "movements":
+                if row["movementId"] not in meta["movements"]:
+                    # Sometimes we get data for movements that are "excluded", this ignores them.
+                    continue
+
                 # Unique ID for this entry
                 row["row_id"] = (
                     row["movementId"] + "_" + str(int(row["datetime"].timestamp()))
