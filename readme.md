@@ -31,12 +31,13 @@ SOCRATA_ENDPOINT=datahub.austintexas.gov
 
 ### Arguments
 
-| Flag              | Description                                         | Default        |
-|-------------------|-----------------------------------------------------|----------------|
-| `-s`, `--start`   | Start date for the data pull in `YYYY-MM-DD` format | 7 days ago     |
-| `-e`, `--end`     | End date for the data pull in `YYYY-MM-DD` format   | Today          |
+| Flag              | Description                                       | Default    |
+|-------------------|---------------------------------------------------|------------|
+| `-s`, `--start`   | Start date for the data pull in `YYYY-MM-DD` format | 7 days ago |
+| `-e`, `--end`     | End date for the data pull in `YYYY-MM-DD` format | Today      |
+| `-r`, `--dry-run` | Runs the script in [dry run mode](#dry-run-mode)  | `False`    |
 
-Both arguments are optional. If omitted, the script defaults to the last 7 days.
+Both date arguments are optional. If omitted, the script defaults to the last 7 days.
 
 ### Examples
 
@@ -60,6 +61,15 @@ Specify both dates explicitly:
 python etl/inrix_download.py -s 2026-06-01 -e 2026-06-30
 ```
 
+### Dry Run Mode
+
+Running the script in dry run mode (`-r` or `--dry-run`) will only test authenicating with the INRIX and Socrata APIs. 
+It will not test loading, transforming, or uploading any data.
+
+Example:
+```bash
+python etl/inrix_download.py -r
+```
 ---
  
 ## Docker

@@ -255,6 +255,7 @@ def main():
     parser = argparse.ArgumentParser(description="Fetch INRIX signal metrics and upload to Socrata.")
     parser.add_argument("-s", "--start", default=seven_days_ago.strftime("%Y-%m-%d"), help="Start date in YYYY-MM-DD format (default: 7 days ago)")
     parser.add_argument("-e", "--end", default=today.strftime("%Y-%m-%d"), help="End date in YYYY-MM-DD format (default: today)")
+    parser.add_argument("-n", "--dry-run", action="store_true", help="Allows for a test dry run where nothing actually gets downloaded from INRIX or uploaded to Socrata.")
     args = parser.parse_args()
 
     # Validate date formats
@@ -273,10 +274,21 @@ def main():
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
     }
+
     intersections = get_intersections_list(headers, args.start, args.end)
     metadata = get_signal_metadata(headers, intersections)
 
     dates = [start + timedelta(days=i) for i in range((end - start).days + 1)]
+
+    if args.dry_run:
+        logger.info(
+            "Dry run mode enabled. Authenticated with INRIX/Socrata APIs but did not test loading, transforming, or uploading of metrics directly.")
+        dates_info = "Would have downloaded metrics for the following dates: "
+        for date in dates:
+            dates_info += date.strftime("%Y-%m-%d") + ", "
+        logger.info(dates_info)
+        return
+
 
     # First, get metrics by signal
     get_metrics(dates, intersections, metadata, headers, query="signals")
