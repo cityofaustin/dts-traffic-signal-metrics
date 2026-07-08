@@ -1,0 +1,7 @@
+.env
+/.idea
+*.csv
+*.geojson
+*.pyc
+.DS_Store
+env_file

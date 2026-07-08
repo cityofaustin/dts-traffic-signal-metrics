@@ -1,0 +1,2 @@
+requests==2.34.*
+sodapy==2.2.*

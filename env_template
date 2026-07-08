@@ -1,0 +1,13 @@
+# INRIX
+INRIX_APP_ID=
+INRIX_HASH_TOKEN=
+INRIX_AUTH_URL=
+INRIX_SIGNALS_URL=
+
+# Socrata
+MOVEMENTS_DATASET=8qqy-h6xg
+SIGNALS_DATASET=bfmq-ijru
+SOCRATA_SECRET_KEY=<apiKeySecret> (recommended) or password
+SOCRATA_TOKEN=<appToken>
+SOCRATA_API_KEY=<apiKeyId> (recommended) or username
+SOCRATA_ENDPOINT=datahub.austintexas.gov

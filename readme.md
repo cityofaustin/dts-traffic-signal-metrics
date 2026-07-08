@@ -1,5 +1,102 @@
 # Traffic Signal Metrics
 
-Scripts for retrieving data from the INRIX signal analytics platform API.
+This script fetches traffic signal metrics from the INRIX API and upserts them to Socrata. 
 
-Much more coming soon!
+## Usage
+
+```
+python etl/inrix_download.py [-s START_DATE] [-e END_DATE]
+```
+
+## Environment Variables
+ 
+Create a `.env` file using the template supplied in `env_template`. Note that only the vendor can provision INRIX API app IDs 
+and requires a subscription.
+ 
+```
+# INRIX
+INRIX_APP_ID=
+INRIX_HASH_TOKEN=
+INRIX_AUTH_URL=
+INRIX_SIGNALS_URL=
+
+# Socrata
+MOVEMENTS_DATASET=8qqy-h6xg
+SIGNALS_DATASET=bfmq-ijru
+SOCRATA_SECRET_KEY=<apiKeySecret> (recommended) or password
+SOCRATA_TOKEN=<appToken>
+SOCRATA_API_KEY=<apiKeyId> (recommended) or username
+SOCRATA_ENDPOINT=datahub.austintexas.gov
+```
+
+### Arguments
+
+| Flag              | Description                                       | Default    |
+|-------------------|---------------------------------------------------|------------|
+| `-s`, `--start`   | Start date for the data pull in `YYYY-MM-DD` format | 7 days ago |
+| `-e`, `--end`     | End date for the data pull in `YYYY-MM-DD` format | Today      |
+| `-r`, `--dry-run` | Runs the script in [dry run mode](#dry-run-mode)  | `False`    |
+
+Both date arguments are optional. If omitted, the script defaults to the last 7 days.
+
+### Examples
+
+Run with default date range (last 7 days):
+```bash
+python etl/inrix_download.py
+```
+
+Specify a start date only (end defaults to today):
+```bash
+python etl/inrix_download.py -s 2026-06-01
+```
+
+Specify an end date only (start defaults to 7 days before today):
+```bash
+python etl/inrix_download.py -e 2026-06-15
+```
+
+Specify both dates explicitly:
+```bash
+python etl/inrix_download.py -s 2026-06-01 -e 2026-06-30
+```
+
+### Dry Run Mode
+
+Running the script in dry run mode (`-r` or `--dry-run`) will only test authenicating with the INRIX and Socrata APIs. 
+It will not test loading, transforming, or uploading any data.
+
+Example:
+```bash
+python etl/inrix_download.py -r
+```
+---
+ 
+## Docker
+ 
+If you would like to run this script in a Docker container, follow the instructions below.
+ 
+### Build
+ 
+```bash
+docker build -t dts-traffic-signal-metrics:local .
+```
+ 
+Then run the container, passing date arguments as needed:
+ 
+```bash
+# Default date range (last 7 days)
+docker run --env-file .env dts-traffic-signal-metrics:local
+ 
+# Specify a start date
+docker run --env-file .env dts-traffic-signal-metrics:local -s 2026-06-01
+ 
+# Specify both dates
+docker run --env-file .env dts-traffic-signal-metrics:local -s 2026-06-01 -e 2026-06-30
+```
+
+## Data Notes
+
+- Records where `anonymized` is `"true"` are skipped and not uploaded.
+- Movement records for intersections or movements not present in the metadata are silently skipped (these are typically excluded movements).
+- Uploaded records include a `row_id` field used as the Socrata upsert key, formatted as `{movement_id}_{unix_timestamp}` for movements and `{intersection_id}_{unix_timestamp}` for signals.
