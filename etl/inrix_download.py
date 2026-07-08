@@ -240,9 +240,11 @@ def records_to_socrata(records, dataset, batch_size=10000):
     total = len(records)
 
     for start in range(0, total, batch_size):
-        batch = records[start:start + batch_size]
+        batch = records[start : start + batch_size]
         soda_res = soda_client.upsert(dataset, batch)
-        logger.info(f"Batch {start // batch_size + 1} ({start}-{start + len(batch) - 1} of {total - 1}):")
+        logger.info(
+            f"Batch {start // batch_size + 1} ({start}-{start + len(batch) - 1} of {total - 1}):"
+        )
         logger.info(soda_res)
 
 
@@ -252,10 +254,27 @@ def main():
     seven_days_ago = today - timedelta(days=7)
 
     # Argument parsing
-    parser = argparse.ArgumentParser(description="Fetch INRIX signal metrics and upload to Socrata.")
-    parser.add_argument("-s", "--start", default=seven_days_ago.strftime("%Y-%m-%d"), help="Start date in YYYY-MM-DD format (default: 7 days ago)")
-    parser.add_argument("-e", "--end", default=today.strftime("%Y-%m-%d"), help="End date in YYYY-MM-DD format (default: today)")
-    parser.add_argument("-n", "--dry-run", action="store_true", help="Allows for a test dry run where nothing actually gets downloaded from INRIX or uploaded to Socrata.")
+    parser = argparse.ArgumentParser(
+        description="Fetch INRIX signal metrics and upload to Socrata."
+    )
+    parser.add_argument(
+        "-s",
+        "--start",
+        default=seven_days_ago.strftime("%Y-%m-%d"),
+        help="Start date in YYYY-MM-DD format (default: 7 days ago)",
+    )
+    parser.add_argument(
+        "-e",
+        "--end",
+        default=today.strftime("%Y-%m-%d"),
+        help="End date in YYYY-MM-DD format (default: today)",
+    )
+    parser.add_argument(
+        "-n",
+        "--dry-run",
+        action="store_true",
+        help="Allows for a test dry run where nothing actually gets downloaded from INRIX or uploaded to Socrata.",
+    )
     args = parser.parse_args()
 
     # Validate date formats
@@ -282,13 +301,13 @@ def main():
 
     if args.dry_run:
         logger.info(
-            "Dry run mode enabled. Authenticated with INRIX/Socrata APIs but did not test loading, transforming, or uploading of metrics directly.")
+            "Dry run mode enabled. Authenticated with INRIX/Socrata APIs but did not test loading, transforming, or uploading of metrics directly."
+        )
         dates_info = "Would have downloaded metrics for the following dates: "
         for date in dates:
             dates_info += date.strftime("%Y-%m-%d") + ", "
         logger.info(dates_info)
         return
-
 
     # First, get metrics by signal
     get_metrics(dates, intersections, metadata, headers, query="signals")

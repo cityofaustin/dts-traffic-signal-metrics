@@ -7,6 +7,7 @@ Functions:
     - get_signal_metrics_payload: Generates payload for signal metrics data for intersections over a specified date.
 """
 
+
 def get_metadata_payload(intersections):
     return {
         "fields": [
